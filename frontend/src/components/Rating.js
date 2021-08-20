@@ -1,11 +1,13 @@
 import React from "react"
 
-function Rating(value, text, color) {
+function Rating({value, no_reviews, color}) {
+    // console.log(value)
+
     return (
         <div className="rating">
             <span>
                 <i style={{color}} className={
-                    value >= 1
+                    value >= 1.0
                         ? 'fas fa-star'
                         : value >= 0.5
                             ? 'fas fa-star-half-alt'
@@ -54,7 +56,7 @@ function Rating(value, text, color) {
 
                 }/>
             </span>
-            <span>{text && text}</span>
+            <span> { no_reviews } reviews</span>
 
         </div>
     )
