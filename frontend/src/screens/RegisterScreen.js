@@ -51,7 +51,7 @@ function RegisterScreen({location, history}) {
                     <Form.Control
                         required
                         type='name'
-                        placeholde='Enter name'
+                        placeholder='Enter name'
                         value={name}
                         onChange={(e) => setName(e.target.value)}>
 
@@ -62,7 +62,7 @@ function RegisterScreen({location, history}) {
                     <Form.Control
                         required
                         type='email'
-                        placeholde='Enter Email'
+                        placeholder='Enter Email'
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}>
 
@@ -73,7 +73,7 @@ function RegisterScreen({location, history}) {
                     <Form.Control
                         required
                         type='password'
-                        placeholde='Enter Password'
+                        placeholder='Enter Password'
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}>
 
@@ -84,7 +84,7 @@ function RegisterScreen({location, history}) {
                     <Form.Control
                         required
                         type='password'
-                        placeholde='Confirm Password'
+                        placeholder='Confirm Password'
                         value={confirmPassword}
                         onChange={(e) => setConfirmPassword(e.target.value)}>
 

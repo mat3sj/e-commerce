@@ -6,6 +6,7 @@ urlpatterns = [
          name='token_obtain_pair'),
     path('register/', users.register_user, name='register'),
 
-    path('profile', users.get_user_detail, name='user-detail'),
+    path('profile/', users.get_user_detail, name='user-detail'),
+    path('profile/update/', users.update_user, name='update-user'),
     path('', users.get_all_users, name='user-list'),
 ]
