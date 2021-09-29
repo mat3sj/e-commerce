@@ -45,7 +45,7 @@ class Order(models.Model):
                                 blank=True)
     total_price = models.DecimalField(max_digits=7, decimal_places=2, null=True,
                                 blank=True)
-    is_paied = models.BooleanField(default=False)
+    is_paied = models.BooleanField(default=False) # todo fix typo
     paid_at = models.DateTimeField(auto_now_add=False, null=True, blank=True)
     is_delivered = models.BooleanField(default=False)
     delivered_at = models.DateTimeField(auto_now_add=False, null=True, blank=True)
