@@ -100,7 +100,7 @@ function ProductScreen({match, history}) {
                                         <Button
                                             onClick={addToCartHandler}
                                             className='btn-block'
-                                            disabled={product.count_in_stock == 0}
+                                            disabled={product.count_in_stock === 0}
                                             type='button'>Add to
                                             Card</Button>
                                     </ListGroup.Item>

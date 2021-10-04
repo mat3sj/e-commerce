@@ -12,7 +12,7 @@ function PaymentScreen({history}) {
 
     const dispatch = useDispatch()
 
-    const [paymentMethod, satPaymendtMethod] = useState('PayPal')
+    const [paymentMethod, setPaymendtMethod] = useState('PayPal')
 
     if (!shippingAddress.address) {
         history.push('/shipping')

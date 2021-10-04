@@ -1,3 +1,5 @@
+import datetime
+
 from rest_framework import status
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
@@ -57,3 +59,32 @@ def add_order_items(request):
 
     serializer = OrderSerializer(order, many=False)
     return Response(serializer.data)
+
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def get_order_by_id(request, pk):
+    user = request.user
+    try:
+        order = Order.objects.get(id=pk)
+    except:
+        return Response({'detail': 'Order has not been found'}, status=status.HTTP_400_BAD_REQUEST)
+
+    if user.is_staff or order.user == user:
+        serializer = serializers.OrderSerializer(order, many=False)
+        return Response(serializer.data)
+    else:
+        Response({'detail': 'Not authorised to view this order'}, status=status.HTTP_403_FORBIDDEN)
+
+
+@api_view(['PUT'])
+@permission_classes([IsAuthenticated])
+def update_order_to_paid(request, pk):
+    order = Order.objects.get(id=pk)
+
+    order.is_paied = True
+    order.paid_at = datetime.datetime.now()
+    order.save()
+
+    return Response('order was paid')
+

@@ -1,12 +1,10 @@
-import React, {useState, useEffect} from "react";
+import React, {useEffect} from "react";
 import {
-    Form,
     Button,
     Row,
     Col,
     Image,
-    ListGroup,
-    ListGroupItem, Card
+    ListGroup, Card
 } from "react-bootstrap";
 import {useDispatch, useSelector} from "react-redux";
 import CheckoutSteps from "../components/CheckoutSteps";

@@ -5,7 +5,7 @@ import {useDispatch, useSelector} from "react-redux";
 import Loader from "../components/Loader";
 import Message from "../components/Message";
 import FormContainer from "../components/FormContainer";
-import {login, register} from "../actions/userActions";
+import {register} from "../actions/userActions";
 
 function RegisterScreen({location, history}) {
     const [name, setName] = useState('')
@@ -30,7 +30,7 @@ function RegisterScreen({location, history}) {
 
     const submitHandler = (e) => {
         e.preventDefault()
-        if (password != confirmPassword) {
+        if (password !== confirmPassword) {
             setMessage('Password do not match')
         } else {
             dispatch(register(name, email, password))
