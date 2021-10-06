@@ -30,7 +30,6 @@ def add_order_items(request):
         total_price=data['totalPrice']
     )
 
-
     # Create shipping address
     shipping_address = ShippingAddress.objects.create(
         order=order,
@@ -63,18 +62,29 @@ def add_order_items(request):
 
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
+def get_my_orders(request):
+    user = request.user
+    orders = user.order_set.all()
+    serializer = serializers.OrderSerializer(orders, many=True)
+    return Response(serializer.data)
+
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
 def get_order_by_id(request, pk):
     user = request.user
     try:
         order = Order.objects.get(id=pk)
     except:
-        return Response({'detail': 'Order has not been found'}, status=status.HTTP_400_BAD_REQUEST)
+        return Response({'detail': 'Order has not been found'},
+                        status=status.HTTP_400_BAD_REQUEST)
 
     if user.is_staff or order.user == user:
         serializer = serializers.OrderSerializer(order, many=False)
         return Response(serializer.data)
     else:
-        Response({'detail': 'Not authorised to view this order'}, status=status.HTTP_403_FORBIDDEN)
+        Response({'detail': 'Not authorised to view this order'},
+                 status=status.HTTP_403_FORBIDDEN)
 
 
 @api_view(['PUT'])
@@ -87,4 +97,3 @@ def update_order_to_paid(request, pk):
     order.save()
 
     return Response('order was paid')
-
