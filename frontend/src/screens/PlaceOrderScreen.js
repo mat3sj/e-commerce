@@ -41,7 +41,7 @@ function PlaceOrderScreen({history}) {
             history.push(`/order/${order.id}`)
             dispatch({type: ORDER_CREATE_RESET})
         }
-    }, [success, history])
+    }, [dispatch, order.id, success, history])
 
     const placeOrder = () => {
         dispatch(createOrder(
