@@ -5,16 +5,21 @@ import Rating from '../components/Rating'
 import Loader from "../components/Loader";
 import Message from "../components/Message";
 import {useDispatch, useSelector} from "react-redux";
-import {listProductDetail} from "../actions/productActions";
+import {deleteProduct, listProductDetail} from "../actions/productActions";
+import {LinkContainer} from "react-router-bootstrap";
 
 
 function ProductScreen({match, history}) {
-    // console.log(match) //todo delete this
     const [qty, setQty] = useState(1)
 
     const dispatch = useDispatch()
+
     const productDetail = useSelector(state => state.productDetail)
     const {loading, error, product} = productDetail
+
+    const userLogin = useSelector(state => state.userLogin)
+    const {userInfo} = userLogin
+
     useEffect(() => {
         dispatch((listProductDetail(match.params.id)))
     }, [dispatch, match.params.id])
@@ -22,7 +27,11 @@ function ProductScreen({match, history}) {
     const addToCartHandler = () => {
         history.push(`/cart/${match.params.id}?qty=${qty}`)
     }
-
+    const deleteHandler = (id) => {
+        if (window.confirm('Are you sure you want to delete this product?')) {
+            dispatch(deleteProduct(id))
+        }
+    }
 
     return (
         <div>
@@ -104,6 +113,23 @@ function ProductScreen({match, history}) {
                                             type='button'>Add to
                                             Card</Button>
                                     </ListGroup.Item>
+                                    {userInfo && userInfo.is_admin && (
+                                        <ListGroup.Item>
+                                            <LinkContainer
+                                                to={`/admin/product/${product.id}/edit`}>
+                                                <Button variant='light'
+                                                        className='btn-sm'>
+                                                    <i className='fas fa-edit'/>
+                                                </Button>
+                                            </LinkContainer>
+
+                                            < Button variant='danger'
+                                                     className='btn-sm'
+                                                     onClick={() => deleteHandler(product.id)}>
+                                                <i className='fas fa-trash'/>
+                                            </Button>
+                                        </ListGroup.Item>)}
+
                                 </ListGroup>
                             </Card>
                         </Col>

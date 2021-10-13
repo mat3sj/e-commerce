@@ -10,24 +10,42 @@ function Header() {
 
     const dispatch = useDispatch()
 
-    const logoutHandler = () =>{
+    const logoutHandler = () => {
         dispatch(logout())
     }
 
     return (
         <header>
-            <Navbar bg="dark" variant="dark" expand="lg" collapseOnSelect>
+            <Navbar bg="dark" variant="dark" expand="lg" collapseOnSelect >
                 <Container>
                     <LinkContainer to='/'>
                         <Navbar.Brand>MyShop</Navbar.Brand>
                     </LinkContainer>
 
                     <Navbar.Toggle aria-controls="basic-navbar-nav"/>
-                    <Navbar.Collapse id="basic-navbar-nav">
-                        <Nav className="mr-auto">
+                    <Navbar.Collapse className="justify-content-end" id="basic-navbar-nav">
+                        <Nav>
+                            {userInfo && userInfo.is_admin && (
+                                <NavDropdown id='admin_menu'
+                                             title='Admin'>
+                                    <LinkContainer to='/admin/user-list'>
+                                        <NavDropdown.Item>Users</NavDropdown.Item>
+                                    </LinkContainer>
+                                    <LinkContainer to='/admin/product-list'>
+                                        <NavDropdown.Item>Products</NavDropdown.Item>
+                                    </LinkContainer>
+                                    <LinkContainer to='/admin/order-list'>
+                                        <NavDropdown.Item>Orders</NavDropdown.Item>
+                                    </LinkContainer>
+
+
+                                </NavDropdown>
+                            )}
+
+
                             <LinkContainer to='/cart'>
                                 <Nav.Link><i
-                                    className="fas fa-shopping-cart"/>Cart</Nav.Link>
+                                    className="fas fa-shopping-cart"/> Cart</Nav.Link>
                             </LinkContainer>
 
                             {userInfo ? (
@@ -45,25 +63,8 @@ function Header() {
                             ) : (
                                 <LinkContainer to='/login'>
                                     <Nav.Link><i
-                                        className="fas fa-user"/>Login</Nav.Link>
+                                        className="fas fa-user"/> Login</Nav.Link>
                                 </LinkContainer>
-                            )}
-
-                            {userInfo && userInfo.is_admin && (
-                                <NavDropdown id='adminmenu'
-                                             title='Admin'>
-                                    <LinkContainer to='/admin/user-list'>
-                                        <NavDropdown.Item>Users</NavDropdown.Item>
-                                    </LinkContainer>
-                                    <LinkContainer to='/admin/product-list'>
-                                        <NavDropdown.Item>Products</NavDropdown.Item>
-                                    </LinkContainer>
-                                    <LinkContainer to='/admin/order-list'>
-                                        <NavDropdown.Item>Orders</NavDropdown.Item>
-                                    </LinkContainer>
-
-
-                                </NavDropdown>
                             )}
 
 
