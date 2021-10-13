@@ -9,7 +9,6 @@ import {listProductDetail} from "../actions/productActions";
 
 
 function ProductScreen({match, history}) {
-    // console.log(match) //todo delete this
     const [qty, setQty] = useState(1)
 
     const dispatch = useDispatch()

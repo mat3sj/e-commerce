@@ -8,10 +8,10 @@ class Product(models.Model):
     id = models.AutoField(primary_key=True, editable=False)
     user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
     name = models.CharField(max_length=200, null=True, blank=True)
-    image = models.ImageField(null=True, blank=True)
+    image = models.ImageField(null=True, blank=True, default='/Image_from_iOS.gif')
     brand = models.CharField(max_length=200, null=True, blank=True)
     category = models.CharField(max_length=200, null=True, blank=True)
-    descriptin = models.TextField(null=True, blank=True)
+    description = models.TextField(null=True, blank=True)
     rating = models.DecimalField(max_digits=7, decimal_places=2, null=True,
                                  blank=True)
     num_reviews = models.IntegerField(null=True, blank=True, default=0)
@@ -45,7 +45,7 @@ class Order(models.Model):
                                 blank=True)
     total_price = models.DecimalField(max_digits=7, decimal_places=2, null=True,
                                 blank=True)
-    is_paied = models.BooleanField(default=False) # todo fix typo
+    is_paid = models.BooleanField(default=False)
     paid_at = models.DateTimeField(auto_now_add=False, null=True, blank=True)
     is_delivered = models.BooleanField(default=False)
     delivered_at = models.DateTimeField(auto_now_add=False, null=True, blank=True)

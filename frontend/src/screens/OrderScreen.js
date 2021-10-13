@@ -48,7 +48,7 @@ function OrderScreen({match}) {
         if (!order || successPay || order.id !== Number(orderId)) {
             dispatch({type:ORDER_PAY_RESET})
             dispatch(getOrderDetails(orderId))
-        }else if(!order.is_payed){ // todo fix this shit
+        }else if(!order.is_paid){
             if(!window.paypal){
                 addPayPalScript()
             }else{
@@ -104,7 +104,7 @@ function OrderScreen({match}) {
                                     {order.payment_method}
 
                                 </p>
-                                {order.is_paied ? ( //todo fix to paid
+                                {order.is_paid ? (
                                     <Message variant='success'>Paid
                                         on {order.paid_at}</Message>
                                 ) : (

@@ -4,7 +4,12 @@ import {LinkContainer} from 'react-router-bootstrap'
 import {useDispatch, useSelector} from "react-redux";
 import Loader from "../components/Loader";
 import Message from "../components/Message";
-import {listProducts, deleteProduct} from "../actions/productActions";
+import {
+    listProducts,
+    deleteProduct,
+    createProduct
+} from "../actions/productActions";
+import {PRODUCT_CREATE_RESET} from "../constants/productConstants";
 
 function ProductListScreen({history, match}) {
 
@@ -12,6 +17,9 @@ function ProductListScreen({history, match}) {
 
     const productList = useSelector(state => state.productList)
     const {error, loading, products} = productList
+
+    const productCreate = useSelector(state => state.productCreate)
+    const {error: errorCreate, loading: loadingCreate, success: successCreate, product:  createdProduct} = productCreate
 
     const productDelete = useSelector(state => state.productDelete)
     const {error: errorDelete, loading: loadingDelete, success: successDelete} = productDelete
@@ -21,16 +29,22 @@ function ProductListScreen({history, match}) {
 
 
     useEffect(() => {
+        dispatch({type: PRODUCT_CREATE_RESET})
         if (!userInfo.is_admin) {
             history.push('/login')
-        } else {
+        }
+
+        if(successCreate){
+            history.push(`/admin/product/${createdProduct.id}/edit`)
+        }else{
             dispatch(listProducts())
         }
-    }, [dispatch, history, userInfo, successDelete])
+
+    }, [dispatch, history, userInfo, successDelete, successCreate, createdProduct])
 
 
-    const createProductHandler = (product) => {
-        //create product
+    const createProductHandler = () => {
+        dispatch(createProduct())
     }
 
     const deleteHandler = (id) => {
@@ -45,11 +59,14 @@ function ProductListScreen({history, match}) {
                     <h1>Products</h1>
                 </Col>
                 <Col className='text-right'>
-                    <Button className='my-3' onClick={createProductHandler()}>
+                    <Button className='my-3' onClick={createProductHandler}>
                         <i className='fas fa-plus'> Create Product</i>
                     </Button>
                 </Col>
             </Row>
+            {loadingCreate && <Loader/>}
+            {errorCreate && <Message variant='danger'>{errorCreate}</Message>}
+
             {loadingDelete && <Loader/>}
             {errorDelete && <Message variant='danger'>{errorDelete}</Message>}
 
@@ -67,6 +84,7 @@ function ProductListScreen({history, match}) {
                             <th>Price</th>
                             <th>Category</th>
                             <th>Brand</th>
+                            <th>In stock</th>
                             <th>Actions</th>
                             </thead>
                             <tbody>
@@ -77,6 +95,7 @@ function ProductListScreen({history, match}) {
                                     <td>${product.price}</td>
                                     <td>{product.category}</td>
                                     <td>{product.brand}</td>
+                                    <td>{product.count_in_stock}</td>
                                     <td>
                                         <LinkContainer
                                             to={`/admin/product/${product.id}/edit`}>
