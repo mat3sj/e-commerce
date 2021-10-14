@@ -119,7 +119,7 @@ export const getUserDetails = (id) => async (dispatch, getState) => {
         }
 
         const {data} = await axios.get(
-            `/api/users/${id}/`,
+            `/api/users/${id}`,
             config
         )
 
@@ -153,7 +153,7 @@ export const updateUserProfile = (user) => async (dispatch, getState) => {
                 Authorization: `Bearer ${userInfo.token}`
             }
         }
-        const {data} = await axios.put(`/api/users/profile/update/`, user, config)
+        const {data} = await axios.put(`/api/users/profile`, user, config)
         dispatch({
             type: USER_UPDATE_PROFILE_SUCCESS,
             payload: data
@@ -217,7 +217,7 @@ export const deleteUser = (id) => async (dispatch, getState) => {
                 Authorization: `Bearer ${userInfo.token}`
             }
         }
-        const {data} = await axios.delete(`/api/users/delete/${id}`, config)
+        const {data} = await axios.delete(`/api/users/${id}`, config)
         dispatch({
             type: USER_DELETE_SUCCESS,
             payload: data
@@ -247,7 +247,7 @@ export const updateUser = (user) => async (dispatch, getState) => {
                 Authorization: `Bearer ${userInfo.token}`
             }
         }
-        const {data} = await axios.put(`/api/users/update/${user.id}/`, user, config)
+        const {data} = await axios.put(`/api/users/${user.id}`, user, config)
         dispatch({
             type: USER_UPDATE_SUCCESS,
         })

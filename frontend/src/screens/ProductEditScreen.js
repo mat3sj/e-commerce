@@ -86,7 +86,7 @@ function ProductEditScreen({match, history}) {
                     // Authorization: `Bearer ${userInfo.token}`
                 }
             }
-            const {data} = await axios.post(`/api/products/upload/`, formData, config)
+            const {data} = await axios.post(`/api/products/images/`, formData, config)
             setImage(data)
             setUploading(false)
 

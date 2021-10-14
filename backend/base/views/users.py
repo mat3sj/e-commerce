@@ -4,6 +4,7 @@ from rest_framework import status
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated, IsAdminUser
 from rest_framework.response import Response
+from rest_framework.views import APIView
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework_simplejwt.views import TokenObtainPairView
 
@@ -43,71 +44,74 @@ def register_user(request):
     return Response(serializer.data)
 
 
-@api_view(['PUT'])
-@permission_classes([IsAuthenticated])
-def update_user(request):
-    user = request.user
+class UserProfileView(APIView):
+    """
 
-    data = request.data
-    user.first_name = data['name']
-    user.username = data['email']
-    user.email = data['email']
+    """
+    permission_classes = [IsAuthenticated]
 
-    if data['password'] != '':
-        user.password = make_password(data['password'])
+    def get(self, request):
+        user = request.user
 
-    user.save()
-    serializer = serializers.UserSerializerWithToken(user, many=False)
+        serializer = serializers.UserSerializer(user, many=False)
+        return Response(serializer.data)
 
-    return Response(serializer.data)
+    def put(self, request):
+        user = request.user
 
+        data = request.data
+        user.first_name = data['name']
+        user.username = data['email']
+        user.email = data['email']
 
-@api_view(['GET'])
-@permission_classes([IsAuthenticated])
-def get_user_detail(request):
-    user = request.user
+        if data['password'] != '':
+            user.password = make_password(data['password'])
 
-    serializer = serializers.UserSerializer(user, many=False)
-    return Response(serializer.data)
+        user.save()
+        serializer = serializers.UserSerializerWithToken(user, many=False)
 
-
-@api_view(['GET'])
-@permission_classes([IsAdminUser])
-def get_all_users(request):
-    users = User.objects.all()
-    serializer = serializers.UserSerializer(users, many=True)
-    return Response(serializer.data)
+        return Response(serializer.data)
 
 
-@api_view(['GET'])
-@permission_classes([IsAdminUser])
-def get_user_by_id(request, pk):
-    user = User.objects.get(id=pk)
+class UserListView(APIView):
+    """
 
-    serializer = serializers.UserSerializer(user, many=False)
-    return Response(serializer.data)
+    """
+    permission_classes = [IsAdminUser]
 
-
-@api_view(['PUT'])
-@permission_classes([IsAuthenticated])
-def update_user_by_id(request, pk):
-    user = User.objects.get(id=pk)
-
-    data = request.data
-
-    user.first_name = data['name']
-    user.username = data['email']
-    user.is_staff = data['is_admin']
-
-    user.save()
-
-    serializer = serializers.UserSerializer(user, many=False)
-    return Response(serializer.data)
+    def get(self, request):
+        users = User.objects.all()
+        serializer = serializers.UserSerializer(users, many=True)
+        return Response(serializer.data)
 
 
-@api_view(['DELETE'])
-@permission_classes([IsAdminUser])
-def delete_user(request, pk):
-    user = User.objects.get(id=pk)
-    user.delete()
-    return Response('User was deleted')
+class UserDetailView(APIView):
+    """
+
+    """
+    permission_classes = [IsAdminUser]
+
+    def get(self, request, user_id):
+        user = User.objects.get(id=user_id)
+
+        serializer = serializers.UserSerializer(user, many=False)
+        return Response(serializer.data)
+
+    def put(self, request, user_id):
+        user = User.objects.get(id=user_id)
+
+        data = request.data
+
+        user.first_name = data['name']
+        user.username = data['email']
+        user.is_staff = data['is_admin']
+
+        user.save()
+
+        serializer = serializers.UserSerializer(user, many=False)
+        return Response(serializer.data)
+
+    def delete(self, request, user_id):
+        user = User.objects.get(id=user_id)
+        user.delete()
+        return Response('User was deleted')
