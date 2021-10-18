@@ -6,7 +6,10 @@ from rest_framework.permissions import IsAuthenticated, IsAdminUser
 from rest_framework.response import Response
 
 from base import serializers as serializers
-from base.models import Product, Order, OrderItem, ShippingAddress
+from base.models.order import Order
+from base.models.product import Product
+from base.models.shipping_address import ShippingAddress
+from base.models.order_item import OrderItem
 from base.serializers import OrderSerializer
 
 

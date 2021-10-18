@@ -1,9 +1,12 @@
+from rest_framework import status
 from rest_framework.decorators import api_view, permission_classes, APIView
-from rest_framework.permissions import IsAdminUser
+from rest_framework.permissions import IsAdminUser, IsAuthenticated
 from rest_framework.response import Response
+from rest_framework.views import APIView
 
 from base import serializers as serializers
-from base.models import Product
+from base.models.product import Product
+from base.models.review import Review
 from base.permissions import IsAdminOrReadOnly
 
 
@@ -85,3 +88,43 @@ class ProductImagesView(APIView):
         return Response('Image was uploaded')
 
 
+class ProductReviewView(APIView):
+    """
+
+    """
+    permission_classes = [IsAuthenticated]
+
+
+
+    def post(self, request, product_id):
+        user = request.user
+        product = Product.objects.get(id=product_id)
+        data = request.data
+
+        if product.review_set.filter(user=user).exists():
+            return Response({'details': 'Product already reviewed'},
+                            status=status.HTTP_400_BAD_REQUEST)
+
+        elif data['rating'] == 0:
+            return Response({'details': 'Please select a rating'})
+
+        else:
+            review = Review.objects.create(
+                user=user,
+                product=product,
+                name=user.first_name,
+                rating=data['rating'],
+                comment=data['comment'],
+            )
+
+            reviews = product.review_set.all()
+            product.num_reviews = len(reviews)
+
+            total = 0
+            for i in reviews:
+                total += i.rating
+
+            product.rating = total / len(reviews)
+            product.save()
+
+            return Response({'detail': 'Review added'})

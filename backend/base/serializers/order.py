@@ -1,5 +1,8 @@
 from rest_framework import serializers
-from base.models import ShippingAddress, OrderItem, Order
+
+from base.models.order import Order
+from base.models.shipping_address import ShippingAddress
+from base.models.order_item import OrderItem
 from base.serializers import UserSerializer
 
 
