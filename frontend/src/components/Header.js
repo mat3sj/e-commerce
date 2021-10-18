@@ -16,7 +16,7 @@ function Header() {
 
     return (
         <header>
-            <Navbar bg="dark" variant="dark" expand="lg" collapseOnSelect >
+            <Navbar bg="light" variant="light" expand="lg" collapseOnSelect >
                 <Container>
                     <LinkContainer to='/'>
                         <Navbar.Brand>MyShop</Navbar.Brand>

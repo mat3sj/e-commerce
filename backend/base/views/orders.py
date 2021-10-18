@@ -105,3 +105,15 @@ def get_all_orders(request):
     orders = Order.objects.all()
     serializer = serializers.OrderSerializer(orders, many=True)
     return Response(serializer.data)
+
+
+@api_view(['PUT'])
+@permission_classes([IsAdminUser])
+def update_order_to_delivered(request, pk):
+    order = Order.objects.get(id=pk)
+
+    order.is_delivered = True
+    order.delivered_at = datetime.datetime.now()
+    order.save()
+
+    return Response('order was delivered')
